@@ -1,0 +1,21 @@
+{
+  "name": "timitao/sportradar",
+  "type": "project",
+  "require": {
+    "php": "^8.2"
+  },
+  "require-dev": {
+    "ext-xdebug": "^3.0",
+    "phpunit/phpunit": "^10.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Sportradar\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Tomasz Kunicki"
+    }
+  ]
+}

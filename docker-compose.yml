@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  cli:
+    build:
+      context: .
+      dockerfile: ./docker/cli/Dockerfile
+      target: development
+      args:
+        COMPOSER_BASE: development
+    working_dir: /app
+    volumes:
+      - ./app:/app:cached
+  composer:
+    build:
+      context: .
+      dockerfile: ./docker/cli/Dockerfile
+      target: composer
+      args:
+        COMPOSER_BASE: development
+    working_dir: /app
+    volumes:
+      - ./app:/app:cached
