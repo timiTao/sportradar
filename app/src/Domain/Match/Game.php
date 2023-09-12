@@ -28,6 +28,10 @@ class Game
                     $this->id = $event->getAggregateId();
                     $this->homeTeamScore = $event->getHomeTeamScore();
                     break;
+                case $event instanceof GameHomeScoreUpdated:
+                    $this->id = $event->getAggregateId();
+                    $this->homeTeamScore = $event->getScore();
+                    break;
                 default:
                     throw InvalidEvent::notSupported($event::class);
             }

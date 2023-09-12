@@ -51,4 +51,20 @@ class GameTest extends TestCase
         $this->assertCount(2, $events);
         $this->assertInstanceOf(GameHomeScoreUpdated::class, $events[1], print_r($events, true));
     }
+
+    public function testWhenConsumeGameStartedThenSuccess(): void
+    {
+        $game = Game::reconstruct([
+            new GameStarted('1', 'h', 'a', 0, 0)
+        ]);
+        $this->assertInstanceOf(Game::class, $game);
+    }
+
+    public function testWhenConsumeGameHomeScoreUpdatedThenSuccess(): void
+    {
+        $game = Game::reconstruct([
+            new GameHomeScoreUpdated('1', 2)
+        ]);
+        $this->assertInstanceOf(Game::class, $game);
+    }
 }
