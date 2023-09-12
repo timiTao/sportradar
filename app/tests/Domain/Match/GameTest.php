@@ -7,6 +7,7 @@ namespace Domain\Match;
 use PHPUnit\Framework\TestCase;
 use Sportradar\Domain\Match\Events\GameAwayScoreUpdated;
 use Sportradar\Domain\Match\Events\GameEvent;
+use Sportradar\Domain\Match\Events\GameFinished;
 use Sportradar\Domain\Match\Events\GameHomeScoreUpdated;
 use Sportradar\Domain\Match\Events\GameStarted;
 use Sportradar\Domain\Match\Exceptions\InvalidEvent;
@@ -50,7 +51,9 @@ class GameTest extends TestCase
         $events = $game->getEvents();
 
         $this->assertCount(2, $events);
-        $this->assertInstanceOf(GameHomeScoreUpdated::class, $events[1], print_r($events, true));
+        $gameEvent = $events[1];
+        $this->assertInstanceOf(GameHomeScoreUpdated::class, $gameEvent, print_r($events, true));
+        $this->assertEquals(1, $gameEvent->getScore());
     }
 
     public function testWhenConsumeGameStartedThenSuccess(): void
@@ -77,13 +80,34 @@ class GameTest extends TestCase
         $events = $game->getEvents();
 
         $this->assertCount(2, $events);
-        $this->assertInstanceOf(GameAwayScoreUpdated::class, $events[1], print_r($events, true));
+        $gameEvent = $events[1];
+        $this->assertInstanceOf(GameAwayScoreUpdated::class, $gameEvent, print_r($events, true));
+        $this->assertEquals(1, $gameEvent->getScore());
     }
 
     public function testWhenConsumeGameAwayScoreUpdatedThenSuccess(): void
     {
         $game = Game::reconstruct([
             new GameAwayScoreUpdated('1', 2)
+        ]);
+        $this->assertInstanceOf(Game::class, $game);
+    }
+
+    public function testWhenGameIsFinishThenGameFinishedEventPublished(): void
+    {
+        $game = Game::create('id', 'home', 'away');
+        $game->finishGame();
+
+        $events = $game->getEvents();
+
+        $this->assertCount(2, $events);
+        $this->assertInstanceOf(GameFinished::class, $events[1], print_r($events, true));
+    }
+
+    public function testWhenConsumeGameFinishedThenSuccess(): void
+    {
+        $game = Game::reconstruct([
+            new GameFinished('1')
         ]);
         $this->assertInstanceOf(Game::class, $game);
     }
