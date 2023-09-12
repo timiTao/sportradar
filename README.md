@@ -5,6 +5,7 @@
 ### Business
 
 * the board could hold big number of matches
+  * Knowing interface class I assume intention of action, not intention to strictly follow it - then I changed interface of scoring
 * Creating & starting match is same action to simplify process
 * There is no limitation on scores
 * There is no possible for changing rules or scoring process
