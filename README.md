@@ -10,7 +10,7 @@
 * There is no limitation on scores
 * There is no possible for changing rules or scoring process
 * the score is always set of 2 integer as score
-* the score teams are separate events, as consequences in sport games are different
+* the scoring by teams are separate events, as consequences in sport games are different (from my own experience)
 
 ### Technical
 

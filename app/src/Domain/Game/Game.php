@@ -27,17 +27,20 @@ class Game
         if (count($events) == 0 || !($events[0] instanceof GameStarted)) {
             throw InvalidEventStream::missingGameStart();
         }
-        $this->events = $events;
+
         foreach ($events as $event) {
             switch (true) {
                 case $event instanceof GameStarted:
-                    $this->id = $event->getAggregateId();
+                    $this->handleGameStarted($event);
                     break;
                 case $event instanceof GameAwayScoreUpdated:
+                    $this->handleScoreAwayUpdated($event);
+                    break;
                 case $event instanceof GameHomeScoreUpdated:
+                    $this->handleScoreHomeUpdated($event);
                     break;
                 case $event instanceof GameFinished:
-                    $this->isFinished = true;
+                    $this->handleGameFinished($event);
                     break;
                 default:
                     throw InvalidEventStream::notSupported($event::class);
@@ -75,23 +78,43 @@ class Game
 
     public function scoreHomeTeam(): void
     {
-        if ($this->isFinished) {
-            throw ForbiddenScoringInFinishedGame::homeTeam($this->id);
-        }
-        $this->events[] = new GameHomeScoreUpdated($this->id);
+        $this->handleScoreHomeUpdated(new GameHomeScoreUpdated($this->id));
     }
 
     public function scoreAwayTeam(): void
     {
-        if ($this->isFinished) {
-            throw ForbiddenScoringInFinishedGame::awayTeam($this->id);
-        }
-        $this->events[] = new GameAwayScoreUpdated($this->id);
+        $this->handleScoreAwayUpdated(new GameAwayScoreUpdated($this->id));
     }
 
     public function finishGame(): void
     {
+        $this->handleGameFinished(new GameFinished($this->id));
+    }
+
+    private function handleGameStarted(GameStarted $event): void
+    {
+        $this->id = $event->getAggregateId();
+        $this->events[] = $event;
+    }
+
+    private function handleScoreHomeUpdated(GameHomeScoreUpdated $event): void
+    {
+        if ($this->isFinished) {
+            throw ForbiddenScoringInFinishedGame::homeTeam($this->id);
+        }
+        $this->events[] = $event;
+    }
+    private function handleScoreAwayUpdated(GameAwayScoreUpdated $event): void
+    {
+        if ($this->isFinished) {
+            throw ForbiddenScoringInFinishedGame::awayTeam($this->id);
+        }
+        $this->events[] = $event;
+    }
+
+    private function handleGameFinished(GameFinished $event): void
+    {
         $this->isFinished = true;
-        $this->events[] = new GameFinished($this->id);
+        $this->events[] = $event;
     }
 }
