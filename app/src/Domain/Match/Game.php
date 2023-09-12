@@ -89,6 +89,9 @@ class Game
 
     public function scoreAwayTeam(): void
     {
+        if ($this->isFinished) {
+            throw ForbiddenScoringInFinishedGame::awayTeam($this->id);
+        }
         $this->awayTeamScore++;
         $this->events[] = new GameAwayScoreUpdated($this->id, $this->awayTeamScore);
     }

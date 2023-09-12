@@ -154,13 +154,21 @@ class GameTest extends TestCase
         $this->assertCount($expectedAwayScore, $gameAwayScoreEvents);
     }
 
-    public function testWhenGameIsFinishThenThrowException(): void
+    public function testWhenScoreInFinishedGameForHomeTeamThenThrowException(): void
     {
         $game = Game::create('id', 'home', 'away');
         $game->finishGame();
 
         $this->expectException(ForbiddenScoringInFinishedGame::class);
         $game->scoreHomeTeam();
+    }
+    public function testWhenScoreInFinishedGameForAwayTeamThenThrowException(): void
+    {
+        $game = Game::create('id', 'home', 'away');
+        $game->finishGame();
+
+        $this->expectException(ForbiddenScoringInFinishedGame::class);
+        $game->scoreAwayTeam();
     }
 
 }

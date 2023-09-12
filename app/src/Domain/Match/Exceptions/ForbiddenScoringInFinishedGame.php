@@ -14,4 +14,12 @@ class ForbiddenScoringInFinishedGame extends GameException
             $id
         ));
     }
+
+    public static function awayTeam(string $id): self
+    {
+        return new ForbiddenScoringInFinishedGame(sprintf(
+            "You can't score in finished game %s for away team",
+            $id
+        ));
+    }
 }
