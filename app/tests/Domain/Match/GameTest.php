@@ -10,6 +10,7 @@ use Sportradar\Domain\Match\Events\GameEvent;
 use Sportradar\Domain\Match\Events\GameFinished;
 use Sportradar\Domain\Match\Events\GameHomeScoreUpdated;
 use Sportradar\Domain\Match\Events\GameStarted;
+use Sportradar\Domain\Match\Exceptions\ForbiddenScoringInFinishedGame;
 use Sportradar\Domain\Match\Exceptions\InvalidEvent;
 use Sportradar\Domain\Match\Game;
 
@@ -151,6 +152,15 @@ class GameTest extends TestCase
             return $event instanceof GameAwayScoreUpdated;
         });
         $this->assertCount($expectedAwayScore, $gameAwayScoreEvents);
-
     }
+
+    public function testWhenGameIsFinishThenThrowException(): void
+    {
+        $game = Game::create('id', 'home', 'away');
+        $game->finishGame();
+
+        $this->expectException(ForbiddenScoringInFinishedGame::class);
+        $game->scoreHomeTeam();
+    }
+
 }

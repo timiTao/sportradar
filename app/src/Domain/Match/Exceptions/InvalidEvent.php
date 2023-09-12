@@ -6,7 +6,7 @@ namespace Sportradar\Domain\Match\Exceptions;
 
 use Sportradar\Domain\Match\Game;
 
-class InvalidEvent extends \RuntimeException
+class InvalidEvent extends GameException
 {
     public static function notSupported(string $class): self
     {

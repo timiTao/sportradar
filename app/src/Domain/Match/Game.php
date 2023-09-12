@@ -9,6 +9,7 @@ use Sportradar\Domain\Match\Events\GameEvent;
 use Sportradar\Domain\Match\Events\GameFinished;
 use Sportradar\Domain\Match\Events\GameHomeScoreUpdated;
 use Sportradar\Domain\Match\Events\GameStarted;
+use Sportradar\Domain\Match\Exceptions\ForbiddenScoringInFinishedGame;
 use Sportradar\Domain\Match\Exceptions\InvalidEvent;
 
 class Game
@@ -19,6 +20,8 @@ class Game
 
     private int $homeTeamScore;
     private int $awayTeamScore;
+
+    private bool $isFinished = false;
 
     private function __construct(
         GameEvent ...$events
@@ -39,6 +42,7 @@ class Game
                     $this->awayTeamScore = $event->getScore();
                     break;
                 case $event instanceof GameFinished:
+                    $this->isFinished = true;
                     break;
                 default:
                     throw InvalidEvent::notSupported($event::class);
@@ -76,6 +80,9 @@ class Game
 
     public function scoreHomeTeam(): void
     {
+        if ($this->isFinished) {
+            throw ForbiddenScoringInFinishedGame::homeTeam($this->id);
+        }
         $this->homeTeamScore++;
         $this->events[] = new GameHomeScoreUpdated($this->id, $this->homeTeamScore);
     }
@@ -88,6 +95,7 @@ class Game
 
     public function finishGame(): void
     {
+        $this->isFinished = true;
         $this->events[] = new GameFinished($this->id);
     }
 }
