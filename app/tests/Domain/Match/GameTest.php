@@ -6,6 +6,7 @@ namespace Domain\Match;
 
 use PHPUnit\Framework\TestCase;
 use Sportradar\Domain\Match\Events\GameEvent;
+use Sportradar\Domain\Match\Events\GameHomeScoreUpdated;
 use Sportradar\Domain\Match\Events\GameStarted;
 use Sportradar\Domain\Match\Exceptions\InvalidEvent;
 use Sportradar\Domain\Match\Game;
@@ -38,5 +39,16 @@ class GameTest extends TestCase
             }
         };
         Game::reconstruct([$event]);
+    }
+
+    public function testWhenHomeTeamScoreThenScoreUpdatedEventPublish(): void
+    {
+        $game = Game::create('id', 'home', 'away');
+        $game->scoreHomeTeam();
+
+        $events = $game->getEvents();
+
+        $this->assertCount(2, $events);
+        $this->assertInstanceOf(GameHomeScoreUpdated::class, $events[1], print_r($events, true));
     }
 }

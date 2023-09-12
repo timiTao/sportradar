@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Sportradar\Domain\Match;
 
 use Sportradar\Domain\Match\Events\GameEvent;
+use Sportradar\Domain\Match\Events\GameHomeScoreUpdated;
 use Sportradar\Domain\Match\Events\GameStarted;
 use Sportradar\Domain\Match\Exceptions\InvalidEvent;
 
@@ -13,6 +14,8 @@ class Game
     private array $events;
 
     private string $id;
+
+    private int $homeTeamScore;
 
     private function __construct(
         GameEvent ...$events
@@ -23,6 +26,7 @@ class Game
             switch (true) {
                 case $event instanceof GameStarted:
                     $this->id = $event->getAggregateId();
+                    $this->homeTeamScore = $event->getHomeTeamScore();
                     break;
                 default:
                     throw InvalidEvent::notSupported($event::class);
@@ -56,5 +60,11 @@ class Game
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function scoreHomeTeam(): void
+    {
+        $this->homeTeamScore++;
+        $this->events[] = new GameHomeScoreUpdated($this->id, $this->homeTeamScore);
     }
 }
