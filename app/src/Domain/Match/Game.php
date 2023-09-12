@@ -37,7 +37,7 @@ class Game
     ): Game
     {
         return new self(
-            new GameStarted($id, $homeTeam, $awayTeam)
+            new GameStarted($id, $homeTeam, $awayTeam, 0, 0)
         );
     }
 

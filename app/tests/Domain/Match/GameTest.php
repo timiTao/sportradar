@@ -12,7 +12,7 @@ use Sportradar\Domain\Match\Game;
 
 class GameTest extends TestCase
 {
-    public function testWhenGameStartThenHaveIdAssigned(): void
+    public function testWhenGameStartThenHaveIdAssignedWithTeams(): void
     {
         $expectedId = '1';
         $game = Game::create($expectedId, 'home', 'away');
@@ -21,8 +21,8 @@ class GameTest extends TestCase
 
     public function testWhenGameCanBeCreatedThenItWillReturnStartEvent(): void
     {
-        $match = Game::create('id', 'home', 'away');
-        $events = $match->getEvents();
+        $game = Game::create('id', 'home', 'away');
+        $events = $game->getEvents();
         $this->assertCount(1, $events);
         $this->assertInstanceOf(GameStarted::class, $events[0], print_r($events, true));
     }
@@ -38,6 +38,5 @@ class GameTest extends TestCase
             }
         };
         Game::reconstruct([$event]);
-
     }
 }
