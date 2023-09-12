@@ -5,7 +5,9 @@ declare(strict_types = 1);
 namespace Domain\Match;
 
 use PHPUnit\Framework\TestCase;
+use Sportradar\Domain\Match\Events\GameEvent;
 use Sportradar\Domain\Match\Events\GameStarted;
+use Sportradar\Domain\Match\Exceptions\InvalidEvent;
 use Sportradar\Domain\Match\Game;
 
 class GameTest extends TestCase
@@ -13,15 +15,29 @@ class GameTest extends TestCase
     public function testWhenGameStartThenHaveIdAssigned(): void
     {
         $expectedId = '1';
-        $game = new Game($expectedId, 'home', 'away');
+        $game = Game::create($expectedId, 'home', 'away');
         $this->assertEquals($expectedId, $game->getId());
     }
 
     public function testWhenGameCanBeCreatedThenItWillReturnStartEvent(): void
     {
-        $match = new Game('id', 'home', 'away');
+        $match = Game::create('id', 'home', 'away');
         $events = $match->getEvents();
         $this->assertCount(1, $events);
-        $this->assertInstanceOf(GameStarted::class, $events[0]);
+        $this->assertInstanceOf(GameStarted::class, $events[0], print_r($events, true));
+    }
+
+    public function testWhenReconstructNotSupportedEventThenThrowException(): void
+    {
+        $this->expectException(InvalidEvent::class);
+
+        $event = new class() implements GameEvent {
+            public function getAggregateId(): string
+            {
+                return '1';
+            }
+        };
+        Game::reconstruct([$event]);
+
     }
 }

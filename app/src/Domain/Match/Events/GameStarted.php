@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Sportradar\Domain\Match\Events;
 
-class GameStarted
+readonly class GameStarted implements GameEvent
 {
     public function __construct(
-        private readonly string $aggregateId,
-        private readonly string $homeTeam,
-        private readonly string $awayTeam
+        private string $aggregateId,
+        private string $homeTeam,
+        private string $awayTeam
     )
     {
     }
