@@ -54,7 +54,6 @@ class GameTest extends TestCase
         $this->assertCount(2, $events);
         $gameEvent = $events[1];
         $this->assertInstanceOf(GameHomeScoreUpdated::class, $gameEvent, print_r($events, true));
-        $this->assertEquals(1, $gameEvent->getScore());
     }
 
     public function testWhenConsumeGameStartedThenSuccess(): void
@@ -83,7 +82,6 @@ class GameTest extends TestCase
         $this->assertCount(2, $events);
         $gameEvent = $events[1];
         $this->assertInstanceOf(GameAwayScoreUpdated::class, $gameEvent, print_r($events, true));
-        $this->assertEquals(1, $gameEvent->getScore());
     }
 
     public function testWhenConsumeGameAwayScoreUpdatedThenSuccess(): void

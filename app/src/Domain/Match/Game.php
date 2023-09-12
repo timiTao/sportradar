@@ -35,11 +35,8 @@ class Game
                     $this->homeTeamScore = $event->getHomeTeamScore();
                     $this->awayTeamScore = $event->getAwayTeamScore();
                     break;
-                case $event instanceof GameHomeScoreUpdated:
-                    $this->homeTeamScore = $event->getScore();
-                    break;
                 case $event instanceof GameAwayScoreUpdated:
-                    $this->awayTeamScore = $event->getScore();
+                case $event instanceof GameHomeScoreUpdated:
                     break;
                 case $event instanceof GameFinished:
                     $this->isFinished = true;

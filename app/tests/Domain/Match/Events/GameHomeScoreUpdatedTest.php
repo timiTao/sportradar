@@ -15,10 +15,8 @@ class GameHomeScoreUpdatedTest extends TestCase
     public function testWhenCreatedThenHasAllStartingData(): void
     {
         $expectedId = '1';
-        $homeScore = 0;
 
-        $event = new GameHomeScoreUpdated($expectedId, $homeScore);
+        $event = new GameHomeScoreUpdated($expectedId);
         $this->assertEquals($expectedId, $event->getAggregateId());
-        $this->assertEquals($homeScore, $event->getScore());
     }
 }

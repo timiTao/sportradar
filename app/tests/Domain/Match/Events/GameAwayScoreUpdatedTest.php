@@ -14,10 +14,8 @@ class GameAwayScoreUpdatedTest extends TestCase
     public function testWhenCreatedThenHasAllStartingData(): void
     {
         $expectedId = '1';
-        $expectedScore = 0;
 
-        $event = new GameAwayScoreUpdated($expectedId, $expectedScore);
+        $event = new GameAwayScoreUpdated($expectedId);
         $this->assertEquals($expectedId, $event->getAggregateId());
-        $this->assertEquals($expectedScore, $event->getScore());
     }
 }
