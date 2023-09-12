@@ -18,9 +18,6 @@ class Game
 
     private string $id;
 
-    private int $homeTeamScore;
-    private int $awayTeamScore;
-
     private bool $isFinished = false;
 
     private function __construct(
@@ -32,8 +29,6 @@ class Game
             switch (true) {
                 case $event instanceof GameStarted:
                     $this->id = $event->getAggregateId();
-                    $this->homeTeamScore = $event->getHomeTeamScore();
-                    $this->awayTeamScore = $event->getAwayTeamScore();
                     break;
                 case $event instanceof GameAwayScoreUpdated:
                 case $event instanceof GameHomeScoreUpdated:
@@ -80,8 +75,7 @@ class Game
         if ($this->isFinished) {
             throw ForbiddenScoringInFinishedGame::homeTeam($this->id);
         }
-        $this->homeTeamScore++;
-        $this->events[] = new GameHomeScoreUpdated($this->id, $this->homeTeamScore);
+        $this->events[] = new GameHomeScoreUpdated($this->id);
     }
 
     public function scoreAwayTeam(): void
@@ -89,8 +83,7 @@ class Game
         if ($this->isFinished) {
             throw ForbiddenScoringInFinishedGame::awayTeam($this->id);
         }
-        $this->awayTeamScore++;
-        $this->events[] = new GameAwayScoreUpdated($this->id, $this->awayTeamScore);
+        $this->events[] = new GameAwayScoreUpdated($this->id);
     }
 
     public function finishGame(): void
