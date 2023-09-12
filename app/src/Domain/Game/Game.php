@@ -104,6 +104,7 @@ class Game
         }
         $this->events[] = $event;
     }
+
     private function handleScoreAwayUpdated(GameAwayScoreUpdated $event): void
     {
         if ($this->isFinished) {

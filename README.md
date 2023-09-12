@@ -1,9 +1,12 @@
 # Sport radar task
 
+The Final test: `\Application\ScoreBoard\ScoreBoardTest::testWhenDeliverFinalTestThenIGotHired`
+
 ## Assumptions
 
 ### Business
 
+* The order of matches in example, is order of last update, from oldest to newest
 * the board could hold big number of matches
   * Knowing interface class I assume intention of action, not intention to strictly follow it - then I changed interface of scoring
 * Creating & starting match is same action to simplify process

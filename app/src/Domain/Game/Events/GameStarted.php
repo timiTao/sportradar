@@ -10,8 +10,8 @@ readonly class GameStarted implements GameEvent
         private string $aggregateId,
         private string $homeTeam,
         private string $awayTeam,
-        private int $homeTeamScore,
-        private int $awayTeamScore
+        private int    $homeTeamScore,
+        private int    $awayTeamScore
     )
     {
     }

@@ -4,10 +4,8 @@ declare(strict_types = 1);
 
 namespace Domain\Game\Events;
 
-use Sportradar\Domain\Game\Events\GameHomeScoreUpdated;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
-use Sportradar\Domain\Game\Events\GameStarted;
+use Sportradar\Domain\Game\Events\GameHomeScoreUpdated;
 
 class GameHomeScoreUpdatedTest extends TestCase
 {

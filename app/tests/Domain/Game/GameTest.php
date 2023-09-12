@@ -163,6 +163,7 @@ class GameTest extends TestCase
         $this->expectException(ForbiddenScoringInFinishedGame::class);
         $game->scoreHomeTeam();
     }
+
     public function testWhenScoreInFinishedGameForAwayTeamThenThrowException(): void
     {
         $game = Game::create('id', 'home', 'away');
@@ -179,6 +180,7 @@ class GameTest extends TestCase
             new GameFinished('1')
         ]);
     }
+
     public function testWhenReconstructWithoutFirstGameStaredEventThenShouldFail(): void
     {
         $this->expectException(InvalidEventStream::class);

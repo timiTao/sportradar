@@ -6,7 +6,6 @@ namespace Domain\Game\Events;
 
 use PHPUnit\Framework\TestCase;
 use Sportradar\Domain\Game\Events\GameAwayScoreUpdated;
-use Sportradar\Domain\Game\Events\GameHomeScoreUpdated;
 
 class GameAwayScoreUpdatedTest extends TestCase
 {
