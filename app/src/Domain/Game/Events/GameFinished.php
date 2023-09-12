@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Sportradar\Domain\Match\Events;
+namespace Sportradar\Domain\Game\Events;
 
-readonly class GameHomeScoreUpdated implements GameEvent
+readonly class GameFinished implements GameEvent
 {
     public function __construct(
         private string $aggregateId

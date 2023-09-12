@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace Sportradar\Domain\Match;
+namespace Sportradar\Domain\Game;
 
-use Sportradar\Domain\Match\Events\GameAwayScoreUpdated;
-use Sportradar\Domain\Match\Events\GameEvent;
-use Sportradar\Domain\Match\Events\GameFinished;
-use Sportradar\Domain\Match\Events\GameHomeScoreUpdated;
-use Sportradar\Domain\Match\Events\GameStarted;
-use Sportradar\Domain\Match\Exceptions\ForbiddenScoringInFinishedGame;
-use Sportradar\Domain\Match\Exceptions\InvalidEvent;
+use Sportradar\Domain\Game\Events\GameAwayScoreUpdated;
+use Sportradar\Domain\Game\Events\GameEvent;
+use Sportradar\Domain\Game\Events\GameFinished;
+use Sportradar\Domain\Game\Events\GameHomeScoreUpdated;
+use Sportradar\Domain\Game\Events\GameStarted;
+use Sportradar\Domain\Game\Exceptions\ForbiddenScoringInFinishedGame;
+use Sportradar\Domain\Game\Exceptions\InvalidEvent;
 
 class Game
 {

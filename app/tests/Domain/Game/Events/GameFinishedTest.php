@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Domain\Match\Events;
+namespace Domain\Game\Events;
 
 use PHPUnit\Framework\TestCase;
-use Sportradar\Domain\Match\Events\GameFinished;
+use Sportradar\Domain\Game\Events\GameFinished;
 
 class GameFinishedTest extends TestCase
 {

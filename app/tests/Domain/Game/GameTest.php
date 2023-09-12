@@ -2,17 +2,17 @@
 
 declare(strict_types = 1);
 
-namespace Domain\Match;
+namespace Domain\Game;
 
 use PHPUnit\Framework\TestCase;
-use Sportradar\Domain\Match\Events\GameAwayScoreUpdated;
-use Sportradar\Domain\Match\Events\GameEvent;
-use Sportradar\Domain\Match\Events\GameFinished;
-use Sportradar\Domain\Match\Events\GameHomeScoreUpdated;
-use Sportradar\Domain\Match\Events\GameStarted;
-use Sportradar\Domain\Match\Exceptions\ForbiddenScoringInFinishedGame;
-use Sportradar\Domain\Match\Exceptions\InvalidEvent;
-use Sportradar\Domain\Match\Game;
+use Sportradar\Domain\Game\Events\GameAwayScoreUpdated;
+use Sportradar\Domain\Game\Events\GameEvent;
+use Sportradar\Domain\Game\Events\GameFinished;
+use Sportradar\Domain\Game\Events\GameHomeScoreUpdated;
+use Sportradar\Domain\Game\Events\GameStarted;
+use Sportradar\Domain\Game\Exceptions\ForbiddenScoringInFinishedGame;
+use Sportradar\Domain\Game\Exceptions\InvalidEvent;
+use Sportradar\Domain\Game\Game;
 
 class GameTest extends TestCase
 {

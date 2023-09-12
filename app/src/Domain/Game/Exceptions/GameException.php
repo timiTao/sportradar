@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Sportradar\Domain\Match\Exceptions;
+namespace Sportradar\Domain\Game\Exceptions;
 
 class GameException extends \RuntimeException
 {

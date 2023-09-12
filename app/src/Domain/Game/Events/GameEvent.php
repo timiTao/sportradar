@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Sportradar\Domain\Match\Events;
+namespace Sportradar\Domain\Game\Events;
 
 interface GameEvent
 {

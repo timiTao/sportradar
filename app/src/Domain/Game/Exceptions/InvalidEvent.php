@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Sportradar\Domain\Match\Exceptions;
+namespace Sportradar\Domain\Game\Exceptions;
 
-use Sportradar\Domain\Match\Game;
+use Sportradar\Domain\Game\Game;
 
 class InvalidEvent extends GameException
 {
