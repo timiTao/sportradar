@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Domain\Match;
 
 use PHPUnit\Framework\TestCase;
+use Sportradar\Domain\Match\Events\GameAwayScoreUpdated;
 use Sportradar\Domain\Match\Events\GameEvent;
 use Sportradar\Domain\Match\Events\GameHomeScoreUpdated;
 use Sportradar\Domain\Match\Events\GameStarted;
@@ -64,6 +65,25 @@ class GameTest extends TestCase
     {
         $game = Game::reconstruct([
             new GameHomeScoreUpdated('1', 2)
+        ]);
+        $this->assertInstanceOf(Game::class, $game);
+    }
+
+    public function testWhenAwayTeamScoreThenScoreUpdatedEventPublish(): void
+    {
+        $game = Game::create('id', 'home', 'away');
+        $game->scoreAwayTeam();
+
+        $events = $game->getEvents();
+
+        $this->assertCount(2, $events);
+        $this->assertInstanceOf(GameAwayScoreUpdated::class, $events[1], print_r($events, true));
+    }
+
+    public function testWhenConsumeGameAwayScoreUpdatedThenSuccess(): void
+    {
+        $game = Game::reconstruct([
+            new GameAwayScoreUpdated('1', 2)
         ]);
         $this->assertInstanceOf(Game::class, $game);
     }
