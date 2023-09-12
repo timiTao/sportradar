@@ -22,3 +22,4 @@
 * introduce Event Driven Architecture (EDA), as expecting high load over Score board with multiple sources from matches
   to improve Read Model - based on own experience, the load of data will increase
 * Assume order of events is guaranty by infrastructure
+* not implementing snapshots

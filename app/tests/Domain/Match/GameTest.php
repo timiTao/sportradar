@@ -111,4 +111,46 @@ class GameTest extends TestCase
         ]);
         $this->assertInstanceOf(Game::class, $game);
     }
+
+    public static function providerWhenBothTeamScoresThenCorrespondingNumberOverScoreUpdateEventIsPublished(): array
+    {
+        return [
+            'double score home team' => [2, 0, 'h', 'a', ['h', 'h']],
+            'double score away team' => [0, 2, 'h', 'a', ['a', 'a']],
+            'mixed score both team' => [4, 3, 'h', 'a', ['h', 'a', 'h', 'a', 'h', 'a', 'h']],
+        ];
+    }
+
+    /**
+     * @dataProvider providerWhenBothTeamScoresThenCorrespondingNumberOverScoreUpdateEventIsPublished
+     */
+    public function testWhenBothTeamScoresThenCorrespondingNumberOverScoreUpdateEventIsPublished(
+        int    $expectedHomeScore,
+        int    $expectedAwayScore,
+        string $homeTeam,
+        string $awayTeam,
+        array  $scenario
+    ): void
+    {
+        $game = Game::create('id', $homeTeam, $awayTeam);
+
+        foreach ($scenario as $scoreSide) {
+            if ($scoreSide === $homeTeam) {
+                $game->scoreHomeTeam();
+            } else {
+                $game->scoreAwayTeam();
+            }
+        }
+
+        $gameHomeScoreEvents = array_filter($game->getEvents(), static function ($event) {
+            return $event instanceof GameHomeScoreUpdated;
+        });
+        $this->assertCount($expectedHomeScore, $gameHomeScoreEvents);
+
+        $gameAwayScoreEvents = array_filter($game->getEvents(), static function ($event) {
+            return $event instanceof GameAwayScoreUpdated;
+        });
+        $this->assertCount($expectedAwayScore, $gameAwayScoreEvents);
+
+    }
 }
