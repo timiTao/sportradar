@@ -4,6 +4,7 @@
 
 ### Business
 
+* the board could hold big number of matches
 * Creating & starting match is same action to simplify process
 * There is no limitation on scores
 * There is no possible for changing rules or scoring process

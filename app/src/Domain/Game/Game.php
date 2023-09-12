@@ -10,7 +10,7 @@ use Sportradar\Domain\Game\Events\GameFinished;
 use Sportradar\Domain\Game\Events\GameHomeScoreUpdated;
 use Sportradar\Domain\Game\Events\GameStarted;
 use Sportradar\Domain\Game\Exceptions\ForbiddenScoringInFinishedGame;
-use Sportradar\Domain\Game\Exceptions\InvalidEvent;
+use Sportradar\Domain\Game\Exceptions\InvalidEventStream;
 
 class Game
 {
@@ -24,6 +24,9 @@ class Game
         GameEvent ...$events
     )
     {
+        if (count($events) == 0 || !($events[0] instanceof GameStarted)) {
+            throw InvalidEventStream::missingGameStart();
+        }
         $this->events = $events;
         foreach ($events as $event) {
             switch (true) {
@@ -37,7 +40,7 @@ class Game
                     $this->isFinished = true;
                     break;
                 default:
-                    throw InvalidEvent::notSupported($event::class);
+                    throw InvalidEventStream::notSupported($event::class);
             }
         }
     }

@@ -11,7 +11,7 @@ use Sportradar\Domain\Game\Events\GameFinished;
 use Sportradar\Domain\Game\Events\GameHomeScoreUpdated;
 use Sportradar\Domain\Game\Events\GameStarted;
 use Sportradar\Domain\Game\Exceptions\ForbiddenScoringInFinishedGame;
-use Sportradar\Domain\Game\Exceptions\InvalidEvent;
+use Sportradar\Domain\Game\Exceptions\InvalidEventStream;
 use Sportradar\Domain\Game\Game;
 
 class GameTest extends TestCase
@@ -33,7 +33,7 @@ class GameTest extends TestCase
 
     public function testWhenReconstructNotSupportedEventThenThrowException(): void
     {
-        $this->expectException(InvalidEvent::class);
+        $this->expectException(InvalidEventStream::class);
 
         $event = new class() implements GameEvent {
             public function getAggregateId(): string
@@ -67,7 +67,8 @@ class GameTest extends TestCase
     public function testWhenConsumeGameHomeScoreUpdatedThenSuccess(): void
     {
         $game = Game::reconstruct([
-            new GameHomeScoreUpdated('1', 2)
+            new GameStarted('1', 'h', 'a', 0, 0),
+            new GameHomeScoreUpdated('1')
         ]);
         $this->assertInstanceOf(Game::class, $game);
     }
@@ -87,7 +88,8 @@ class GameTest extends TestCase
     public function testWhenConsumeGameAwayScoreUpdatedThenSuccess(): void
     {
         $game = Game::reconstruct([
-            new GameAwayScoreUpdated('1', 2)
+            new GameStarted('1', 'h', 'a', 0, 0),
+            new GameAwayScoreUpdated('1')
         ]);
         $this->assertInstanceOf(Game::class, $game);
     }
@@ -106,6 +108,7 @@ class GameTest extends TestCase
     public function testWhenConsumeGameFinishedThenSuccess(): void
     {
         $game = Game::reconstruct([
+            new GameStarted('1', 'h', 'a', 0, 0),
             new GameFinished('1')
         ]);
         $this->assertInstanceOf(Game::class, $game);
@@ -167,6 +170,22 @@ class GameTest extends TestCase
 
         $this->expectException(ForbiddenScoringInFinishedGame::class);
         $game->scoreAwayTeam();
+    }
+
+    public function testWhenReconstructWithoutGameStaredEventThenShouldFail(): void
+    {
+        $this->expectException(InvalidEventStream::class);
+        Game::reconstruct([
+            new GameFinished('1')
+        ]);
+    }
+    public function testWhenReconstructWithoutFirstGameStaredEventThenShouldFail(): void
+    {
+        $this->expectException(InvalidEventStream::class);
+        Game::reconstruct([
+            new GameFinished('1'),
+            new GameStarted('1', 'h', 'a', 0, 0),
+        ]);
     }
 
 }
